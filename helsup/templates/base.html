@@ -1,0 +1,36 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ title }}</title>
+
+    <!-- Custom styles for this template -->
+    {% block css %} {% endblock %}
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+{% include "includes/header.html" %}
+
+{% block content %} {% endblock %}
+
+{% include "includes/footer.html" %}
+
+<!-- Bootstrap core JavaScript -->
+
+<!-- FontAwesome script -->
+
+</body>
+
+</html>

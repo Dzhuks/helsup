@@ -1,4 +1,87 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/main_page.css">
+    <link rel="stylesheet" href="styles/first_header.css">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/footer.css">
 
-{% block content %}
-{% endblock content %}
+    <title>Главная страница</title>
+</head>
+<body>
+    <header id=""myHeader>
+        <nav class="navbar">
+              <div class="navbar__wrap">
+                <div class="hamb">
+                  <div class="hamb__field" id="hamb">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                  </div>
+                </div>
+                <a href="/" class="logo" id="logo">InVol</a>
+                <ul class="menu" id="menu">
+                  <li><a href="#">ПОДДЕРЖКА</a></li>
+                  <li><a href="#">ВОПРОСЫ</a></li>
+                  <li><a href="#">О НАС</a></li>
+
+                  <!-- ПРИ БЭКЕНДЕ ЕСЛИ УЖЕ ВОШЕЛ В АККАУНТ, ТО ВМЕСТО "ЗАКАЗАТЬ" БУДЕТ "ПРОФИЛЬ" -->
+                  <li><a href="forms.h">ЗАКАЗАТЬ</a></li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+    </header>
+    <div class="popup" id="popup"></div>
+    <div class="content">
+        <div class="body_container">
+            <div class="left_block">
+                <p class="block_title">Помогите нуждающимся и получите взамен вознаграждение</p>
+                <p class="block_description">Начните свой путь волонтерства и помогите нуждающимся- за маленькое вознаграждение</p>
+                <a class="start_button" href="forms.html">ЗАКАЗАТЬ</a>
+            </div>
+            <div class="right_block">
+                <img src="images\image_final.png" alt="photo" class="block_image">
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-columns">
+          <div class="footer-column">
+            <h3>© 2020 MayDa</h3>
+          </div>
+          <div class="footer-column">
+            <h3>Contact us</h3>
+            <ul>
+              <li><a href="#">+7 747 521 95 08</a></li>
+              <li><a href="#">dasiktazik@gmail.com</a></li>
+              <li><a href="#">erke.toystore</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Сделаем мир добрее</h3>
+          </div>
+        </div>
+    </footer>
+
+    <script>
+        window.onscroll = function() {myFunction()};
+        
+        var header = document.getElementById("myHeader");
+        var sticky = header.offsetTop;
+        
+        function myFunction() {
+          if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+          } else {
+            header.classList.remove("sticky");
+          }
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+body {
+    width: 100%;
+}
+
+.title {
+    font-size: 6.2em;
+    margin-bottom: 0;
+    color: #002D24;
+    text-align: center;
+    font-weight: 600;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 30px;
+}
+
+.content {
+    max-width: 60%;
+    margin: auto;
+}
+
+.row {
+    position: relative;
+    width: 30vw;
+    max-width: 400px;
+    overflow-wrap: normal;
+    text-align: center;
+}
+
+.row input {
+    width: 85%;
+    padding: 15px;
+    border: solid 4px #71F334;
+    border-radius: 20px;
+    background: none;
+    outline: none;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif;
+}
+
+.row span {
+    position: absolute;
+    left: 50px;
+    top: -8px;
+    font-size: 1.1em;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    color: #002D24;
+    background-color: white;
+    padding: 0 6px;
+    pointer-events: none;
+    transition-duration: 0.5s;
+}
+
+.row_buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.focused_btn {
+    background: linear-gradient(to right bottom, #26F9A1, 80%, #0F8D5C);
+    border: 0;
+    border-radius: 40px;
+    padding: 15px 45px;
+    font-size: 1em;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    transition-duration: 0.2s;
+}
+
+.focused_btn:active,
+.unfocused_btn:active {
+    transform: translateY(7px);
+}
+
+.unfocused_btn {
+    background: none;
+    border: 0;
+    font-size: 1em;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    transition-duration: 0.2s;
+}
+
+@media only screen and (max-width: 850px) {
+    .row_buttons {
+        flex-direction: column;
+    }
+    .focused_btn{
+        margin-bottom: 20px;
+    }
+    .content {
+        width: 100%;
+        margin: auto;
+    }
+    .row {
+        width: 100%;
+    }
+
+    .container {
+        width: 100%;
+    }
+}

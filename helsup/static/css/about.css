@@ -1,0 +1,41 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main {
+    width: calc(100% - 160px);
+    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.title {
+    width: 100%;
+    font-weight: bold;
+    font-size: 30px;
+    text-align: left;
+    padding: 40px 0px;
+}
+
+.main img {
+    max-width: 100%;
+    height: auto;
+}
+
+.paragraph {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 30px;
+}
+
+@media only screen and (max-width: 767px) {
+    .main {
+        width: calc(100% - 20px);
+    }
+}

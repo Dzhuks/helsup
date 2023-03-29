@@ -1,0 +1,81 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    margin: 20px 0px;
+    width: calc(100% - 160px);
+    max-width: 1280px;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 280px 2fr;
+    grid-template-areas: 
+        "pfp form"
+        "decor form";
+}
+
+.elem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 1px 8px 4px #cacaca;
+    border-radius: 20px;
+    margin: 10px;
+}
+
+.pfp {
+    grid-area: pfp;
+    max-height: 100%;
+}
+
+.pfp__image {
+    width: 150px;
+}
+
+.properties {
+    grid-area: form;
+    width: calc(100% - 150px);
+    padding: 75px;
+    justify-content: flex-start;
+    font-family: 'Poppins', sans-serif;
+}
+
+.decor {
+    grid-area: decor;
+    background: none;
+    box-shadow: none;
+}
+
+.decor img {
+    max-width: 100%;
+    height: auto;
+}
+
+.title {
+    align-self: flex-start;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.row {
+    margin: 15px;
+    width: 100%;
+}
+
+.row span {
+    font-size: 24px;
+    width: 30%;
+    display: inline-block;
+}
+
+.row input {
+    width: 65%;
+    padding: 10px 0px;
+    box-shadow: 0px 1px 8px 4px #cacaca;
+    border: 1px solid rgba(118, 119, 123, 0.6);
+    border-radius: 10px;
+}

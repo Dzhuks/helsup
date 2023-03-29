@@ -1,0 +1,234 @@
+* {
+    font-family: 'Montserrat';
+    font-style: normal;
+    margin: 0;
+    padding: 0;   
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main {
+    width: calc(100% - 160px);
+    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main__h1 {
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 54px;
+    display: flex;
+    align-items: center;
+    
+    color: #1F2232;
+}
+
+.main__h1_left {
+    align-self: flex-start;
+}
+
+.cards {
+    width: 100%;
+    margin-top: 4rem;
+    display: grid;
+    grid-template-columns: repeat(3, 278px);
+    grid-column-gap: 20px;
+    justify-content: space-between;
+}
+
+.card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 7px;
+    border: 1px solid #0F0F0F;
+    box-shadow: 10px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-bottom: 3rem;
+}
+
+.card__img {
+    width: 100%;
+    height: auto;
+}
+
+.card__content {
+    width: calc(100% - 40px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.card__text {
+    font-size: 16px;
+    margin-top: 16px;
+}
+
+.card__button {
+    background: #FFFFFF;
+    border: 1px solid #0F0F0F;
+    box-shadow: 6px 6px 0px #0F0F0F;
+    border-radius: 4px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+    /* or 150% */
+    
+    letter-spacing: 0.42px;
+    width: 100%;
+    padding: 8px 0;
+    color: #000000;
+    cursor: pointer;
+    margin: 16px 0;
+    transition-duration: 0.2s;
+}
+
+.card__button:hover {
+    color:#1DE08F;
+    box-shadow: 6px 6px 0px #1DE08F;
+}
+.card__button:active {
+    transform: translateY(7px);
+
+}
+
+.main__button {
+    background: white;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.8);
+    padding: 8px;
+    border: 1px solid #0F0F0F;
+    border-radius: 8px;
+}
+
+.popup {
+    display: flex;
+    position: relative;
+}
+
+.popup__form {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 300px;
+    top: calc(100% + 5px);
+    right: 0;
+    border: 1px solid #0F0F0F;
+    background-color: white;
+    border-radius: 8px;
+
+    padding: 15px;
+}
+
+.popup__form_active {
+    display: flex;
+}
+
+.popup__h2 {
+    font-size: 22px;
+    width: 100%;
+}
+
+.theform__input {
+    width: calc(100% - 36px);
+    background: #FFFFFF;
+    border: 0.5px solid rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 12px 18px;
+
+    margin-top: 1rem;
+}
+
+.form__bts {
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.del_but {
+    width: 30px;
+    height: 30px;
+    background: none;
+    background: url(./images/del.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 0;
+    background-size: cover;
+}
+
+.form__order {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 29px;
+    text-align: center;
+    margin-top: 2rem;
+    color: #150F0F;
+    padding: .5rem 2rem;
+    background: #1CDD8D;
+    border: 0;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 1060px) {
+    .cards {
+        grid-template-columns: repeat(2, 278px);
+        justify-content: space-evenly;
+    }
+
+    .main {
+        width: calc(100% - 80px);
+    }
+
+    .header {
+        width: calc(100% - 80px);
+    }
+
+    .header__link {
+        font-size: 14px;
+        margin-right: 30px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .cards {
+        width: max-content;
+        grid-template-columns: 278px;
+        grid-gap: 0;
+    }
+
+    .main {
+        width: calc(100% - 40px);
+    }
+
+    .header {
+        width: calc(100% - 20px);
+    }
+
+    .header__link {
+        font-size: 12px;
+        margin-right: 20px;
+    }
+
+    .main__h1 {
+        font-size: 20px;
+    }
+}

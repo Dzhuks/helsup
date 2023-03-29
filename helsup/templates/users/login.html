@@ -1,53 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/main_page.css">
-    <link rel="stylesheet" href="styles/footer.css">
-    <link rel="stylesheet" href="styles/login.css">
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock css %}
+
+{% block title %}
     <title>Вход</title>
-</head>
-<body>
+{% endblock title %}
+
+{% block content %}
     <div class="content">
         <div class="container">
             <div class="row">
                 <a class="title" href="/">InVol</a>
             </div>
-            <div class="row">
-                <input class="input_box" type="text" required="required">
-                <span>Эл. почта</span>
-            </div>
-            <div class="row">
-                <input class="input_box" type="password" required="required">
-                <span>Пароль</span>
-            </div>
-            <div class="row">
-                <div class="row_buttons">
-                    <button class="focused_btn">Войти</button>
-                    <button class="unfocused_btn">Регистрация</button>
+            <form method="POST" style="margin: 3rem;">
+                {% csrf_token %}
+                {% comment %} {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                {{ error|escape }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-primary">
+                            {{ error|escape }}
+                        </div>
+                    {% endfor %}
+                {% endif %} {% endcomment %}
+                {% for field in form %}
+                    <div class="row">
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <div class="row">
+                    <div class="row_buttons">
+                        <button name="login" class="focused_btn" id="login">Войти</button>
+                        <a class="unfocused_btn" href="{% url 'users:signup' %}">Регистрация</a>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-    <footer class="whitened">
-        <div class="footer-columns">
-          <div class="footer-column">
-            <h3>© 2020 MayDa</h3>
-          </div>
-          <div class="footer-column">
-            <h3>Contact us</h3>
-            <ul>
-              <li><a href="#">+7 747 521 95 08</a></li>
-              <li><a href="#">dasiktazik@gmail.com</a></li>
-              <li><a href="#">erke.toystore</a></li>
-            </ul>
-          </div>
-          <div class="footer-column">
-            <h3>Сделаем мир добрее</h3>
-          </div>
-        </div>
-    </footer>
-</body>
-</html>
+{% endblock content %}

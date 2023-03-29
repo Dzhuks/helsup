@@ -16,6 +16,11 @@
 
                 <!-- ПРИ БЭКЕНДЕ ЕСЛИ УЖЕ ВОШЕЛ В АККАУНТ, ТО ВМЕСТО "ЗАКАЗАТЬ" БУДЕТ "ПРОФИЛЬ" -->
                 <li><a href="forms.h">ЗАКАЗАТЬ</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'users:logout' %}">ВЫЙТИ</a></li>
+                {% else %}
+                    <li><a href="{% url 'users:login' %}">ВОЙТИ</a></li>
+                {% endif %}
             </ul>
             </div>
         </div>

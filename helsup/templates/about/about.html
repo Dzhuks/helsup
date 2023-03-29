@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock css %}
+
+{% block title %}
+    <title>О нас</title>
+{% endblock title %}
+
+{% block content %}
+    <main class="main">
+        <div class="title">О нас</div>
+        <div class="paragraph">InVol - это инструмент, предназначенный для оказания помощи людям с ограниченными возможностями, включая людей с психическими нарушениями. Мы предоставляем возможность трудоспособным гражданам с классификацией M или H по группе мобильности создавать запросы за небольшую плату. Наши волонтеры готовы оказать помощь в ответ на эти запросы, чтобы помочь людям с ограниченными возможностями.</div>
+        <img src="{% static 'img/Volunteering-cuate 1.png' %}" alt="">
+    </main>
+{% endblock content %}

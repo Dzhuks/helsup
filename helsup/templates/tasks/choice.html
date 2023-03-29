@@ -1,45 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/reset.css">
-    <link rel="stylesheet" href="styles/main_page.css">
-    <link rel="stylesheet" href="styles/forms.css">
+{% load static %}
+{% extends 'base.html' %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock css %}
+
+{% block title %}
     <title>Document</title>
-</head>
-<body>
+{% endblock title %}
+
+{% block header %}
     <header>
         <a class="logo" href="/">InVol</a>
     </header>
-    <img src="images\freepik--character-1--inject-24.png" alt="girl" class="first_girl">
-    <img src="images\freepik--character-4--inject-24.png" alt="girl" class="second_girl">
+{% endblock header %}
+
+{% block content %}
+    <img src="{% static 'img/freepik--character-1--inject-24.png' %}" alt="girl" class="first_girl">
+    <img src="{% static 'img/freepik--character-4--inject-24.png' %}" alt="girl" class="second_girl">
     <div class="content">
         <div class="first_card card">
-            <img src="images/card_img.png" alt="banner" class="banner elem">
+            <img src="{% static 'img/card_img.png' %}" alt="banner" class="banner elem">
             <div class="title elem">
                 Волонтер
             </div>
             <div class="description elem">
                 Оказывайте помощь тем, кто в ней нуждается, благодаря сайту InVol.
             </div>
-            <a class="register elem" href="register.html">
+            <a class="register elem" href="{% url 'users:signup' %}">
                 Стать волонтером
             </a>
         </div>
         <div class="second_card card">
-            <img src="images/card_img.png" alt="banner" class="banner elem">
+            <img src="{% static 'img/card_img.png' %}" alt="banner" class="banner elem">
             <div class="title elem">
                 Клиент
             </div>
             <div class="description elem">
                 Закажите помощь для себя или для ваших близких, используя сайт InVol.
             </div>
-            <a class="register elem" href="login.html">
+            <a class="register elem" href="{% url 'users:login' %}">
                 Для клиентов
             </a>
         </div>
     </div>
-</body>
-</html>
+{% endblock content %}

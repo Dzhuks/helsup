@@ -16,7 +16,7 @@
             <div class="row">
                 <a class="title" href="/">InVol</a>
             </div>
-            <form method="POST" style="margin: 3rem;">
+            <form method="POST">
                 {% csrf_token %}
                 {% comment %} {% if form.errors %}
                     {% for field in form %}
@@ -31,12 +31,15 @@
                             {{ error|escape }}
                         </div>
                     {% endfor %}
-                {% endif %} {% endcomment %}
-                {% for field in form %}
-                    <div class="row">
-                        {{ field }}
-                    </div>
-                {% endfor %}
+                {% endif %}  {% endcomment %}
+                <div class="row">
+                    {{ form.email }}
+                    <span>Эл. почта</span>
+                </div>
+                <div class="row">
+                    {{form.password}}
+                    <span>Пароль</span>
+                </div> 
                 <div class="row">
                     <div class="row_buttons">
                         <button name="login" class="focused_btn" id="login">Войти</button>
@@ -45,5 +48,5 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> 
 {% endblock content %}

@@ -4,11 +4,6 @@ from users.models import MOBILITY_CHOICES, SEX_CHOICES, CustomUser, Profile
 
 
 class SignUpForm(UserCreationForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.visible_fields():
-            field.field.widget.attrs["class"] = "form-control"
-
     class Meta:
         model = CustomUser
         fields = ("first_name", "email", "phone_number", "password")
@@ -21,16 +16,25 @@ class SignUpForm(UserCreationForm):
 
 
 class LoginForm(AuthenticationForm):
-    remember_me = forms.BooleanField(required=False)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.visible_fields():
-            field.field.widget.attrs["class"] = "form-control"
+    email = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            "class": "input_box",
+            'type': 'text',
+            "required": "required"
+        })
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            "class": "input_box",
+            'type': "password",
+            "required": "required"
+        })
+    )
 
     class Meta:
         model = CustomUser
-        fields = ("first_name", "password", "remember_me")
+        fields = ("email", "password")
 
 
 class UpdateCustomUserForm(forms.ModelForm):

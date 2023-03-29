@@ -35,15 +35,13 @@ class SignUpView(View):
 
 class UserLoginView(LoginView):
     form_class = LoginForm
-    template_name = "users/login.html"
+    template_name = "users/test.html"
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {"form": form})
 
     def form_valid(self, form):
-        remember_me = form.cleaned_data.get("remember_me")
-
-        if not remember_me:
-            self.request.session.set_expiry(0)
-            self.request.session.modified = True
-
         return super(UserLoginView, self).form_valid(form)
 
 

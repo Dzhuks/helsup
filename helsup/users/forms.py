@@ -1,40 +1,50 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from users.models import MOBILITY_CHOICES, SEX_CHOICES, CustomUser, Profile
 
 
-class SignUpForm(UserCreationForm):
+class SignUpForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.visible_fields():
+            field.field.widget.attrs["class"] = "input_box"
+            field.field.widget.attrs["required"] = "required"
+
+        self.fields['first_name'].widget.attrs['type'] = 'text'
+        self.fields['email'].widget.attrs['type'] = 'text'
+        self.fields['phone_number'].widget.attrs['type'] = 'tel'
+        self.fields['password'].widget.attrs['type'] = 'password'
+
     class Meta:
         model = CustomUser
         fields = ("first_name", "email", "phone_number", "password")
         labels = {
             "first_name": "Имя",
-            "email": "Электронная почта",
+            "email": "Эл. почта",
             "phone_number": "Номер телефона",
             "password": "Пароль",
         }
 
 
-class LoginForm(AuthenticationForm):
-    email = forms.CharField(
-        max_length=100,
-        widget=forms.TextInput(attrs={
-            "class": "input_box",
-            'type': 'text',
-            "required": "required"
-        })
-    )
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            "class": "input_box",
-            'type': "password",
-            "required": "required"
-        })
-    )
+class LoginForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
+
+        for field in self.visible_fields():
+            field.field.widget.attrs["class"] = "input_box"
+            field.field.widget.attrs["required"] = "required"
+
+        self.fields['email'].widget.attrs['type'] = 'text'
+        self.fields['password'].widget.attrs['type'] = 'password'
 
     class Meta:
         model = CustomUser
         fields = ("email", "password")
+        labels = {
+            'email': "Эл. почта",
+            "password": "Пароль",
+        }
 
 
 class UpdateCustomUserForm(forms.ModelForm):

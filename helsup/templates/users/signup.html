@@ -12,32 +12,23 @@
 
 {% block content %}
     <div class="content">
-        <div class="container">
+        <form class="container" method="POST">
+            {% csrf_token %}
             <div class="row">
                 <a class="title" href="/">InVol</a>
             </div>
-            <div class="row">
-                <input class="input_box" type="text" required="required">
-                <span>Имя</span>
-            </div>
-            <div class="row">
-                <input class="input_box" type="text" required="required">
-                <span>Эл. почта</span>
-            </div>
-            <div class="row">
-                <input class="input_box" type="tel" required="required">
-                <span>Тел. номер</span>
-            </div>
-            <div class="row">
-                <input class="input_box" type="password" required="required">
-                <span>Пароль</span>
-            </div>
+            {% for field in form %}
+                <div class="row">
+                    {{ field }}
+                    <span>{{field.label_tag}}</span>
+                </div>
+            {% endfor %}
             <div class="row">
                 <div class="row_buttons">
-                    <a class="focused_btn" href="#">Далее</a>
-                    <a class="unfocused_btn" href="{% url 'users:login' %}">Войти</a>
+                    <button class="focused_btn">Далее</button>
+                    <button class="unfocused_btn">Войти</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 {% endblock content %}

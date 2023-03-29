@@ -12,41 +12,23 @@
 
 {% block content %}
     <div class="content">
-        <div class="container">
+        <form class="container" method="POST">
+            {% csrf_token %}
             <div class="row">
                 <a class="title" href="/">InVol</a>
             </div>
-            <form method="POST">
-                {% csrf_token %}
-                {% comment %} {% if form.errors %}
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <div class="alert alert-danger">
-                                {{ error|escape }}
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
-                    {% for error in form.non_field_errors %}
-                        <div class="alert alert-primary">
-                            {{ error|escape }}
-                        </div>
-                    {% endfor %}
-                {% endif %}  {% endcomment %}
+            {% for field in form %}
                 <div class="row">
-                    {{ form.email }}
-                    <span>Эл. почта</span>
+                    {{ field }}
+                    <span>{{field.label_tag}}</span>
                 </div>
-                <div class="row">
-                    {{form.password}}
-                    <span>Пароль</span>
-                </div> 
-                <div class="row">
-                    <div class="row_buttons">
-                        <button name="login" class="focused_btn" id="login">Войти</button>
-                        <a class="unfocused_btn" href="{% url 'users:signup' %}">Регистрация</a>
-                    </div>
+            {% endfor %}
+            <div class="row">
+                <div class="row_buttons">
+                    <button class="focused_btn">Войти</button>
+                    <button class="unfocused_btn">Регистрация</button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div> 
 {% endblock content %}

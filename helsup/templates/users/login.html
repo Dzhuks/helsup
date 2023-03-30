@@ -10,6 +10,9 @@
     <title>Вход</title>
 {% endblock title %}
 
+{% comment %} reset header {% endcomment %}
+{% block header %}{% endblock header %}
+
 {% block content %}
     <div class="content">
         <form class="container" method="POST">
@@ -17,6 +20,20 @@
             <div class="row">
                 <a class="title" href="/">InVol</a>
             </div>
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        {{ error|escape }}
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-primary">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}
+            {% endif %}
             {% for field in form %}
                 <div class="row">
                     {{ field }}
@@ -25,8 +42,8 @@
             {% endfor %}
             <div class="row">
                 <div class="row_buttons">
-                    <button class="focused_btn">Войти</button>
-                    <button class="unfocused_btn">Регистрация</button>
+                    <button class="focused_btn" type="submit">Войти</button>
+                    <a class="unfocused_btn" href="{% url 'users:signup' %}">Регистрация</a>
                 </div>
             </div>
         </form>

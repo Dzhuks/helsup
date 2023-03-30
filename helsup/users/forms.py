@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 from users.models import MOBILITY_CHOICES, SEX_CHOICES, CustomUser, Profile
 
 
@@ -26,7 +27,7 @@ class SignUpForm(forms.ModelForm):
         }
 
 
-class LoginForm(forms.ModelForm):
+class CustomLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
@@ -35,14 +36,14 @@ class LoginForm(forms.ModelForm):
             field.field.widget.attrs["class"] = "input_box"
             field.field.widget.attrs["required"] = "required"
 
-        self.fields['email'].widget.attrs['type'] = 'text'
+        self.fields['username'].widget.attrs['type'] = 'text'
         self.fields['password'].widget.attrs['type'] = 'password'
 
     class Meta:
         model = CustomUser
-        fields = ("email", "password")
+        fields = ("username", "password")
         labels = {
-            'email': "Эл. почта",
+            'username': "Эл. почта",
             "password": "Пароль",
         }
 

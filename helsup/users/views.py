@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.views import View
-from users.forms import (LoginForm, SignUpForm, UpdateCustomUserForm,
+from users.forms import (CustomLoginForm, SignUpForm, UpdateCustomUserForm,
                          UpdateProfileForm)
 
 
@@ -34,7 +34,7 @@ class SignUpView(View):
 
 
 class UserLoginView(LoginView):
-    form_class = LoginForm
+    form_class = CustomLoginForm
     template_name = "users/login.html"
 
     def form_valid(self, form):

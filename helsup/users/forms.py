@@ -1,29 +1,38 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from users.models import MOBILITY_CHOICES, SEX_CHOICES, CustomUser, Profile
 
 
-class SignUpForm(forms.ModelForm):
+class SignUpForm(UserCreationForm):
+    password1 = forms.CharField(
+        label="Пароль",
+        strip=False,
+        widget=forms.PasswordInput(),
+    )
+    password2 = forms.CharField(
+        label="Введите пароль еще раз",
+        widget=forms.PasswordInput(),
+        strip=False,
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         for field in self.visible_fields():
-            field.field.widget.attrs["class"] = "input_box"
+            field.field.widget.attrs["class"] = "input_box  "
             field.field.widget.attrs["required"] = "required"
 
-        self.fields['first_name'].widget.attrs['type'] = 'text'
-        self.fields['email'].widget.attrs['type'] = 'text'
-        self.fields['phone_number'].widget.attrs['type'] = 'tel'
-        self.fields['password'].widget.attrs['type'] = 'password'
+        self.fields['first_name'].widget.input_type = 'text'
+        self.fields['email'].widget.input_type = 'text'
+        self.fields['phone_number'].widget.input_type = 'tel'
 
-    class Meta:
+    class Meta(UserCreationForm.Meta):
         model = CustomUser
-        fields = ("first_name", "email", "phone_number", "password")
+        fields = ("first_name", "email", "phone_number", "password1", "password2")
         labels = {
             "first_name": "Имя",
             "email": "Эл. почта",
             "phone_number": "Номер телефона",
-            "password": "Пароль",
         }
 
 
@@ -36,8 +45,8 @@ class CustomLoginForm(AuthenticationForm):
             field.field.widget.attrs["class"] = "input_box"
             field.field.widget.attrs["required"] = "required"
 
-        self.fields['username'].widget.attrs['type'] = 'text'
-        self.fields['password'].widget.attrs['type'] = 'password'
+        self.fields['username'].widget.input_type = 'text'
+        self.fields['password'].widget.input_type = 'password'
 
     class Meta:
         model = CustomUser

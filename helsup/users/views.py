@@ -2,35 +2,17 @@ from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
-from django.views import View
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 from users.forms import (CustomLoginForm, SignUpForm, UpdateCustomUserForm,
                          UpdateProfileForm)
 
 
-class SignUpView(View):
+# Sign Up View
+class SignUpView(CreateView):
     form_class = SignUpForm
-    initial = {"key": "value"}
-    template_name = "users/signup.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect("homepage:home")
-        return super(SignUpView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        return render(request, self.template_name, {"form": form})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-
-        if form.is_valid():
-            form.save()
-            # first_name = form.cleaned_data.get("first_name")
-            # messages.success(request, f"Аккаунт {first_name} успешно создан")
-            return redirect("users:login")
-
-        return render(request, self.template_name, {"form": form})
+    success_url = reverse_lazy('users:login')
+    template_name = 'users/signup.html'
 
 
 class UserLoginView(LoginView):

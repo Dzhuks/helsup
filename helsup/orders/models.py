@@ -5,7 +5,7 @@ from users.models import CustomUser
 
 class OrderManager(models.Manager):
     def get_incompleted_orders(self):
-        return super().get_queryset().filter(complited=False)
+        return super().get_queryset().filter(completed=False)
 
 
 # Create your models here.

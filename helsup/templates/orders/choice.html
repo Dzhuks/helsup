@@ -1,5 +1,5 @@
-{% load static %}
 {% extends 'base.html' %}
+{% load static %}
 
 {% block css %}
     {{ block.super }}
@@ -28,7 +28,7 @@
             <div class="description elem">
                 Оказывайте помощь тем, кто в ней нуждается, благодаря сайту InVol.
             </div>
-            <a class="register elem" href="{% url 'users:signup' %}">
+            <a class="register elem" href="{% url 'orders:show_orders' %}">
                 Стать волонтером
             </a>
         </div>
@@ -40,7 +40,7 @@
             <div class="description elem">
                 Закажите помощь для себя или для ваших близких, используя сайт InVol.
             </div>
-            <a class="register elem" href="{% url 'users:login' %}">
+            <a class="register elem" href="{% url 'orders:my_orders' %}">
                 Для клиентов
             </a>
         </div>

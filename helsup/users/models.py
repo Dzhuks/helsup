@@ -48,6 +48,10 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
+    class Roles(models.TextChoices):
+        VOLUNTEER = "VOL", "Волонтер"
+        CLIENT = "CL", "Клиент"
+
     username = None
     last_name = None
     first_name = models.CharField(
@@ -63,6 +67,9 @@ class CustomUser(AbstractUser):
         max_length=12,
         verbose_name='телефонный номер',
     )
+    role = models.CharField(
+        max_length=50, choices=Roles.choices, default=Roles.VOLUNTEER
+    )
 
     objects = CustomUserManager()
 
@@ -72,6 +79,40 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = "пользователь"
         verbose_name_plural = "пользователи"
+
+
+class VolunteerManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(role=CustomUser.Roles.VOLUNTEER)
+
+
+class ClientManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(role=CustomUser.Roles.Client)
+
+
+class Volunteer(CustomUser):
+    objects = VolunteerManager()
+
+    class Meta:
+        proxy = True
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.type = CustomUser.Roles.VOLUNTEER
+        return super().save(*args, **kwargs)
+
+
+class Client(CustomUser):
+    objects = ClientManager
+
+    class Meta:
+        proxy = True
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.type = CustomUser.Roles.CLIENT
+        return super().save(*args, **kwargs)
 
 
 class Profile(models.Model):
@@ -128,3 +169,7 @@ class Profile(models.Model):
     @receiver(post_save, sender=CustomUser)
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
+
+    @property
+    def mobility_display(self):
+        return f"Группа мобильности: {self.mobility}"

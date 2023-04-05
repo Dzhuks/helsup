@@ -49,8 +49,11 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     class Roles(models.TextChoices):
+        ADMIN = "ADMIN", "Админ"
         VOLUNTEER = "VOL", "Волонтер"
         CLIENT = "CL", "Клиент"
+
+    base_role = Roles.ADMIN
 
     username = None
     last_name = None
@@ -68,7 +71,7 @@ class CustomUser(AbstractUser):
         verbose_name='телефонный номер',
     )
     role = models.CharField(
-        max_length=50, choices=Roles.choices, default=Roles.VOLUNTEER
+        max_length=50, choices=Roles.choices
     )
 
     objects = CustomUserManager()
@@ -80,43 +83,13 @@ class CustomUser(AbstractUser):
         verbose_name = "пользователь"
         verbose_name_plural = "пользователи"
 
-
-class VolunteerManager(models.Manager):
-    def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(role=CustomUser.Roles.VOLUNTEER)
-
-
-class ClientManager(models.Manager):
-    def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(role=CustomUser.Roles.Client)
-
-
-class Volunteer(CustomUser):
-    objects = VolunteerManager()
-
-    class Meta:
-        proxy = True
-
     def save(self, *args, **kwargs):
         if not self.pk:
-            self.type = CustomUser.Roles.VOLUNTEER
+            self.role = self.base_role
         return super().save(*args, **kwargs)
 
 
-class Client(CustomUser):
-    objects = ClientManager
-
-    class Meta:
-        proxy = True
-
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.type = CustomUser.Roles.CLIENT
-        return super().save(*args, **kwargs)
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+class BaseProfile(models.Model):
     image = models.ImageField(
         default='default.jpg',
         upload_to='users_images',
@@ -138,12 +111,6 @@ class Profile(models.Model):
         null=True, blank=True,
         verbose_name='регион'
     )
-    mobility = models.CharField(
-        max_length=10,
-        choices=MOBILITY_CHOICES,
-        null=True, blank=True,
-        verbose_name="мобильность",
-    )
     about_me = models.TextField(
         max_length=600,
         default='',
@@ -158,18 +125,72 @@ class Profile(models.Model):
     )
 
     class Meta:
+        abstract = True
         verbose_name = "профиль"
         verbose_name_plural = "профили"
-
-    @receiver(post_save, sender=CustomUser)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-
-    @receiver(post_save, sender=CustomUser)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
 
     @property
     def mobility_display(self):
         return f"Группа мобильности: {self.mobility}"
+
+
+class VolunteerManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(role=CustomUser.Roles.VOLUNTEER)
+
+
+class Volunteer(CustomUser):
+    base_role = CustomUser.Roles.VOLUNTEER
+    objects = VolunteerManager()
+
+    class Meta:
+        proxy = True
+
+
+@receiver(post_save, sender=Volunteer)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created and instance.role == CustomUser.Roles.VOLUNTEER:
+        VolunteerProfile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=Volunteer)
+def save_user_profile(sender, instance, **kwargs):
+    instance.vol_profile.save()
+
+
+class VolunteerProfile(BaseProfile):
+    user = models.OneToOneField(Volunteer, on_delete=models.CASCADE, related_name="vol_profile")
+
+
+class ClientManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(role=CustomUser.Roles.CLIENT)
+
+
+class Client(CustomUser):
+    base_role = CustomUser.Roles.CLIENT
+    objects = ClientManager()
+
+    class Meta:
+        proxy = True
+
+
+@receiver(post_save, sender=Client)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created and instance.role == CustomUser.Roles.CLIENT:
+        ClientProfile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=Client)
+def save_user_profile(sender, instance, **kwargs):
+    instance.cl_profile.save()
+
+
+class ClientProfile(BaseProfile):
+    user = models.OneToOneField(Client, on_delete=models.CASCADE, related_name="cl_profile")
+    mobility = models.CharField(
+        max_length=10,
+        choices=MOBILITY_CHOICES,
+        null=True, blank=True,
+        verbose_name="мобильность",
+    )

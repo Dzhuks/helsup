@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from users.models import MOBILITY_CHOICES, SEX_CHOICES, CustomUser, Profile
+from users.models import (MOBILITY_CHOICES, SEX_CHOICES, BaseProfile,
+                          ClientProfile, CustomUser, VolunteerProfile)
 
 
 class SignUpForm(UserCreationForm):
@@ -63,7 +64,7 @@ class UpdateCustomUserForm(forms.ModelForm):
         fields = ("first_name", "email", "phone_number")
 
 
-class UpdateProfileForm(forms.ModelForm):
+class BaseUpdateProfileForm(forms.ModelForm):
     image = forms.ImageField(
         label="картинка",
         widget=forms.FileInput(attrs={'class': 'form-control-file'}),
@@ -80,11 +81,24 @@ class UpdateProfileForm(forms.ModelForm):
         choices=SEX_CHOICES,
         required=False,
     )
+
+    class Meta:
+        model = BaseProfile
+        exclude = ("rating",)
+
+
+class UpdateVolunteerProfileForm(forms.ModelForm):
+    class Meta:
+        model = VolunteerProfile
+        exclude = ("rating",)
+
+
+class UpdateClientProfileForm(forms.ModelForm):
     mobility = forms.ChoiceField(
         label="мобильность",
         choices=MOBILITY_CHOICES,
     )
 
     class Meta:
-        model = Profile
+        model = ClientProfile
         exclude = ("rating",)

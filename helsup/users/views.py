@@ -4,8 +4,9 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from users.forms import (CustomLoginForm, SignUpForm, UpdateCustomUserForm,
-                         UpdateProfileForm)
+from users.forms import (CustomLoginForm, SignUpForm, UpdateClientProfileForm,
+                         UpdateCustomUserForm, UpdateVolunteerProfileForm)
+from users.models import CustomUser
 
 
 # Sign Up View
@@ -33,7 +34,10 @@ def logout(request):
 def profile(request):
     if request.method == 'POST':
         user_form = UpdateCustomUserForm(request.POST, instance=request.user)
-        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if request.user.role == CustomUser.Roles.VOLUNTEER:
+            profile_form = UpdateVolunteerProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        else:
+            profile_form = UpdateClientProfileForm(request.POST, request.FILES, instance=request.user.profile)
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
@@ -42,7 +46,10 @@ def profile(request):
             return redirect('homepage:home')
     else:
         user_form = UpdateCustomUserForm(instance=request.user)
-        profile_form = UpdateProfileForm(instance=request.user.profile)
+        if request.user.role == CustomUser.Roles.VOLUNTEER:
+            profile_form = UpdateVolunteerProfileForm(instance=request.user.profile)
+        else:
+            profile_form = UpdateClientProfileForm(instance=request.user.profile)
 
     template_name = "users/profile.html"
     context = {

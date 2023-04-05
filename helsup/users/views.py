@@ -35,9 +35,9 @@ def profile(request):
     if request.method == 'POST':
         user_form = UpdateCustomUserForm(request.POST, instance=request.user)
         if request.user.role == CustomUser.Roles.VOLUNTEER:
-            profile_form = UpdateVolunteerProfileForm(request.POST, request.FILES, instance=request.user.profile)
+            profile_form = UpdateVolunteerProfileForm(request.POST, request.FILES, instance=request.user.vol_profile)
         else:
-            profile_form = UpdateClientProfileForm(request.POST, request.FILES, instance=request.user.profile)
+            profile_form = UpdateClientProfileForm(request.POST, request.FILES, instance=request.user.cl_profile)
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
@@ -46,10 +46,11 @@ def profile(request):
             return redirect('homepage:home')
     else:
         user_form = UpdateCustomUserForm(instance=request.user)
+        print(request.user.role, CustomUser.Roles.VOLUNTEER)
         if request.user.role == CustomUser.Roles.VOLUNTEER:
-            profile_form = UpdateVolunteerProfileForm(instance=request.user.profile)
+            profile_form = UpdateVolunteerProfileForm(instance=request.user.vol_profile)
         else:
-            profile_form = UpdateClientProfileForm(instance=request.user.profile)
+            profile_form = UpdateClientProfileForm(instance=request.user.cl_profile)
 
     template_name = "users/profile.html"
     context = {

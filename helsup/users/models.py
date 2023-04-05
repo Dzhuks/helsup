@@ -134,7 +134,7 @@ class BaseProfile(models.Model):
         return f"Группа мобильности: {self.mobility}"
 
 
-class VolunteerManager(models.Manager):
+class VolunteerManager(CustomUserManager):
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(role=CustomUser.Roles.VOLUNTEER)
 
@@ -162,7 +162,7 @@ class VolunteerProfile(BaseProfile):
     user = models.OneToOneField(Volunteer, on_delete=models.CASCADE, related_name="vol_profile")
 
 
-class ClientManager(models.Manager):
+class ClientManager(CustomUserManager):
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(role=CustomUser.Roles.CLIENT)
 

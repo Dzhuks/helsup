@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from users.models import (MOBILITY_CHOICES, SEX_CHOICES, BaseProfile,
-                          ClientProfile, CustomUser, VolunteerProfile)
+                          ClientProfile, CustomUser, Volunteer,
+                          VolunteerProfile)
 
 
 class SignUpForm(UserCreationForm):
@@ -28,7 +29,7 @@ class SignUpForm(UserCreationForm):
         self.fields['phone_number'].widget.input_type = 'tel'
 
     class Meta(UserCreationForm.Meta):
-        model = CustomUser
+        model = Volunteer
         fields = ("first_name", "email", "phone_number", "password1", "password2")
         labels = {
             "first_name": "Имя",

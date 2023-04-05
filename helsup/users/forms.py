@@ -91,7 +91,7 @@ class BaseUpdateProfileForm(forms.ModelForm):
 class UpdateVolunteerProfileForm(forms.ModelForm):
     class Meta:
         model = VolunteerProfile
-        exclude = ("rating",)
+        exclude = ("rating", "user", "image")
 
 
 class UpdateClientProfileForm(forms.ModelForm):
@@ -102,4 +102,4 @@ class UpdateClientProfileForm(forms.ModelForm):
 
     class Meta:
         model = ClientProfile
-        exclude = ("rating",)
+        exclude = ("rating", "user", "image")

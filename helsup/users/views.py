@@ -46,7 +46,6 @@ def profile(request):
             return redirect('homepage:home')
     else:
         user_form = UpdateCustomUserForm(instance=request.user)
-        print(request.user.role, CustomUser.Roles.VOLUNTEER)
         if request.user.role == CustomUser.Roles.VOLUNTEER:
             profile_form = UpdateVolunteerProfileForm(instance=request.user.vol_profile)
         else:

@@ -4,20 +4,33 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from users.forms import (CustomLoginForm, SignUpForm, UpdateClientProfileForm,
-                         UpdateCustomUserForm, UpdateVolunteerProfileForm)
+from users.forms import (ClientSignUpForm, UpdateClientProfileForm,
+                         UpdateCustomUserForm, UpdateVolunteerProfileForm,
+                         UserLoginForm, VolunteerSignUpForm)
 from users.models import CustomUser
 
 
-# Sign Up View
-class SignUpView(CreateView):
-    form_class = SignUpForm
+# Sign Up Views
+class VolunteerSignUpView(CreateView):
+    form_class = VolunteerSignUpForm
     success_url = reverse_lazy('users:login')
     template_name = 'users/signup.html'
 
 
+class ClientSignUpView(CreateView):
+    form_class = ClientSignUpForm
+    success_url = reverse_lazy('users:login')
+    template_name = 'users/signup.html'
+
+
+def choice(request):
+    template_name = "users/choice.html"
+    context = {}
+    return render(request, template_name, context)
+
+
 class UserLoginView(LoginView):
-    form_class = CustomLoginForm
+    form_class = UserLoginForm
     template_name = "users/login.html"
 
     def form_valid(self, form):

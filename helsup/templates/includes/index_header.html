@@ -17,7 +17,7 @@
                 <!-- ПРИ БЭКЕНДЕ ЕСЛИ УЖЕ ВОШЕЛ В АККАУНТ, ТО ВМЕСТО "ЗАКАЗАТЬ" БУДЕТ "ПРОФИЛЬ" -->
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'users:logout' %}">ВЫЙТИ</a></li>
-                    <li><a href="{% url 'orders:choice' %}">ЗАКАЗАТЬ</a></li>
+                    <li><a href="#">ЗАКАЗАТЬ</a></li>
                 {% else %}
                     <li><a href="{% url 'users:login' %}">ВОЙТИ</a></li>
                     <li><a href="{% url 'users:profile' %}">ПРОФИЛЬ</a></li>

@@ -3,12 +3,6 @@ from django.shortcuts import render
 from orders.services import get_incompleted_orders
 
 
-def choice(request):
-    template_name = "orders/choice.html"
-    context = {}
-    return render(request, template_name, context)
-
-
 @login_required
 def liked_orders(request):
     template_name = "orders/liked.html"

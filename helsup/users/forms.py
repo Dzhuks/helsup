@@ -1,10 +1,10 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from users.models import (BaseProfile, ClientProfile, CustomUser, Volunteer,
-                          VolunteerProfile)
+from users.models import (BaseProfile, Client, ClientProfile, CustomUser,
+                          Volunteer, VolunteerProfile)
 
 
-class SignUpForm(UserCreationForm):
+class VolunteerSignUpForm(UserCreationForm):
     password1 = forms.CharField(
         label="Пароль",
         strip=False,
@@ -37,7 +37,40 @@ class SignUpForm(UserCreationForm):
         }
 
 
-class CustomLoginForm(AuthenticationForm):
+class ClientSignUpForm(UserCreationForm):
+    password1 = forms.CharField(
+        label="Пароль",
+        strip=False,
+        widget=forms.PasswordInput(),
+    )
+    password2 = forms.CharField(
+        label="Введите пароль еще раз",
+        widget=forms.PasswordInput(),
+        strip=False,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.visible_fields():
+            field.field.widget.attrs["class"] = "input_box  "
+            field.field.widget.attrs["required"] = "required"
+
+        self.fields['first_name'].widget.input_type = 'text'
+        self.fields['email'].widget.input_type = 'text'
+        self.fields['phone_number'].widget.input_type = 'tel'
+
+    class Meta(UserCreationForm.Meta):
+        model = Client
+        fields = ("first_name", "email", "phone_number", "password1", "password2")
+        labels = {
+            "first_name": "Имя",
+            "email": "Эл. почта",
+            "phone_number": "Номер телефона",
+        }
+
+
+class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
@@ -50,7 +83,6 @@ class CustomLoginForm(AuthenticationForm):
         self.fields['password'].widget.input_type = 'password'
 
     class Meta:
-        model = CustomUser
         fields = ("username", "password")
         labels = {
             'username': "Эл. почта",

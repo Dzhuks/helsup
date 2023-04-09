@@ -127,6 +127,12 @@ class ClientProfile(BaseProfile):
     client = models.OneToOneField(Client, on_delete=models.CASCADE, related_name='profile')
     mobility = models.CharField(max_length=4, choices=Mobility.choices, null=True, blank=True)
 
+    @property
+    def mobility_display(self):
+        if self.mobility == 'Нету':
+            return 'Нету мобильности'
+        return f'Группа мобильности {self.mobility}'
+
 
 @receiver(post_save, sender=Volunteer)
 def create_volunteer_profile(sender, instance, created, **kwargs):

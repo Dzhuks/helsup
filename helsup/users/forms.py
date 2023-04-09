@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from users.models import (MOBILITY_CHOICES, SEX_CHOICES, BaseProfile,
-                          ClientProfile, CustomUser, Volunteer,
+from users.models import (BaseProfile, ClientProfile, CustomUser, Volunteer,
                           VolunteerProfile)
 
 
@@ -79,7 +78,7 @@ class BaseUpdateProfileForm(forms.ModelForm):
     )
     sex = forms.ChoiceField(
         label="пол",
-        choices=SEX_CHOICES,
+        choices=BaseProfile.Sex.choices,
         required=False,
     )
 
@@ -97,7 +96,7 @@ class UpdateVolunteerProfileForm(forms.ModelForm):
 class UpdateClientProfileForm(forms.ModelForm):
     mobility = forms.ChoiceField(
         label="мобильность",
-        choices=MOBILITY_CHOICES,
+        choices=ClientProfile.Mobility.choices,
     )
 
     class Meta:

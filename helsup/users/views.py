@@ -1,13 +1,16 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from django.views.generic.edit import UpdateView
+from users.backends import ClientAuthBackend, VolunteerAuthBackend
 from users.forms import (ClientSignUpForm, UpdateClientProfileForm,
                          UpdateCustomUserForm, UpdateVolunteerProfileForm,
                          UserLoginForm, VolunteerSignUpForm)
-from users.models import CustomUser
+from users.models import Client, Volunteer, VolunteerProfile
 
 
 # Sign Up Views
@@ -29,40 +32,62 @@ def choice(request):
     return render(request, template_name, context)
 
 
-class UserLoginView(LoginView):
-    form_class = UserLoginForm
-    template_name = "users/login.html"
-
-    def form_valid(self, form):
-        return super(UserLoginView, self).form_valid(form)
-
-
 @login_required
-def logout(request):
+def logout_view(request):
     django_logout(request)
     return redirect('homepage:home')
 
 
+def login_view(request):
+    template_name = "users/login.html"
+    if request.method == 'POST':
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(request, email=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect("orders:show_orders")
+            else:
+                form.add_error(None, 'Invalid email or password.')
+    else:
+        form = UserLoginForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, template_name, context)
+
+
 @login_required
 def profile(request):
+    print(request.user.__class__)
     if request.method == 'POST':
         user_form = UpdateCustomUserForm(request.POST, instance=request.user)
-        if request.user.role == CustomUser.Roles.VOLUNTEER:
-            profile_form = UpdateVolunteerProfileForm(request.POST, request.FILES, instance=request.user.vol_profile)
-        else:
-            profile_form = UpdateClientProfileForm(request.POST, request.FILES, instance=request.user.cl_profile)
+        if isinstance(request.user, Volunteer):
+            profile_form = UpdateVolunteerProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        elif isinstance(request.user, Client):
+            profile_form = UpdateClientProfileForm(request.POST, request.FILES, instance=request.user.profile)
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
             # messages.success(request, 'Your profile is updated successfully')
-            return redirect('homepage:home')
+            return redirect('orders:show_orders')
+        else:
+            user_form = UpdateCustomUserForm(instance=request.user)
+            if isinstance(request.user, Volunteer):
+                profile_form = UpdateVolunteerProfileForm(request.POST, request.FILES, instance=request.user.profile)
+            elif isinstance(request.user, Client):
+                profile_form = UpdateClientProfileForm(request.POST, request.FILES, instance=request.user.profile)
     else:
         user_form = UpdateCustomUserForm(instance=request.user)
-        if request.user.role == CustomUser.Roles.VOLUNTEER:
-            profile_form = UpdateVolunteerProfileForm(instance=request.user.vol_profile)
-        else:
-            profile_form = UpdateClientProfileForm(instance=request.user.cl_profile)
+        if isinstance(request.user, Volunteer):
+            vol_profile = VolunteerProfile.objects.get(volunteer=request.user)
+            profile_form = UpdateVolunteerProfileForm(request.POST, request.FILES, instance=vol_profile)
+        elif isinstance(request.user, Client):
+            profile_form = UpdateClientProfileForm(request.POST, request.FILES, instance=request.user.profile)
 
     template_name = "users/profile.html"
     context = {

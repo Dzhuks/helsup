@@ -1,15 +1,20 @@
 {% load static %}
+{% load users_extras %}
 
 <header class="header">
     <h1 class="header__logo">InVol</h1>
     <div class="header__nav">
         <div class="header__links">
-            <a href="{% url 'orders:choice' %}" class="header__link header__link_selected">Заказы</a>
+            <a href="{% url 'orders:show_orders' %}" class="header__link header__link_selected">Заказы</a>
             <a href="{% url 'about:about' %}" class="header__link">О нас</a>
             <a href="#" class="header__link">Поддержка</a>
             <a href="#" class="header__link">Фильтр</a>
         </div>
         <a href="#"><img src="{% static 'img/liked.png' %}" class="header__liked" alt=""></a>
-        <a href="{% url 'users:profile' %}"><img src="{% static 'img/user.svg' %}" class="header__user" alt=""></a>
+        {% if user|is_instance:"Volunteer" %}
+            <a href="{% url 'users:vol_profile' %}"><img src="{% static 'img/user.svg' %}" class="header__user" alt=""></a>
+        {% elif user|is_instance:"Client" %}
+           <a href="{% url 'users:cli_profile' %}"><img src="{% static 'img/user.svg' %}" class="header__user" alt=""></a>
+        {% endif %}
     </div>
 </header>

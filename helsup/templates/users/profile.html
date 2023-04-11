@@ -17,22 +17,24 @@
             <div class="pfp__name">{{ user.first_name }}</div>
             <button class="profile__button" type="submit">Изменить</button>
         </div>
-        <div class="elem properties">
+        <form class="elem properties" method="POST">
+            {% csrf_token %}
             <div class="title">Информация о себе</div>
-            {% for field in user_form  %}
+            {% for field in user_form %}
                 <div class="row">
                     <span>{{ field.label }}</span>
-                    <input type="text" value="{{ field.value|default_if_none:"" }}">
+                    <input type="text" name="{{ field.name }}" value="{{ field.value|default_if_none:"" }}">
                 </div>
             {% endfor %}
             {% for field in profile_form %}
                 <div class="row">
                     <span>{{ field.label }}</span>
-                    <input type="text" value="{{ field.value|default_if_none:"" }}">
+                    <input type="text" name="{{ field.name }}" value="{{ field.value|default_if_none:"" }}" autocomplete="off">
                 </div>
             {% endfor %}
+            {{ profile_form.as_p }}
             <button type="submit" class="profile__button">Сохранить</button>
-        </div>
+        </form>
         <div class="elem decor">
             <img src="{% static 'img/freepik--Characters--inject-38.png' %}" alt="koten">
         </div>

@@ -1,14 +1,18 @@
 from django.urls import path
-from users.views import (ClientSignUpView, UserLoginView, VolunteerSignUpView,
-                         choice, logout, profile)
+from users.views import (ClientSignUpView, VolunteerSignUpView, choice,
+                         login_view, logout_view, profile)
 
 app_name = "users"
 
 urlpatterns = [
     path("choice/", choice, name="choice"),
-    path("signup/volunteer", VolunteerSignUpView.as_view(), name="vol_signup"),
-    path("signup/client", ClientSignUpView.as_view(), name="cli_signup"),
-    path("login/", UserLoginView.as_view(), name="login"),
-    path('logout/', logout, name='logout'),
-    path("profile/", profile, name="profile"),
+
+    path('volunteer/signup/', VolunteerSignUpView.as_view(), name='vol_signup'),
+    path('client/signup/', ClientSignUpView.as_view(), name='cli_signup'),
+
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+
+    path("volunteer/profile", profile, name="vol_profile"),
+    path("client/profile", profile, name="cli_profile"),
 ]

@@ -1,7 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from users.models import (BaseProfile, Client, ClientProfile, CustomUser,
-                          Volunteer, VolunteerProfile)
+from django.contrib.auth.forms import UserCreationForm
+from users.models import (Client, ClientProfile, CustomUser, Volunteer,
+                          VolunteerProfile)
 
 
 class VolunteerSignUpForm(UserCreationForm):
@@ -70,7 +70,10 @@ class ClientSignUpForm(UserCreationForm):
         }
 
 
-class UserLoginForm(AuthenticationForm):
+class UserLoginForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
@@ -79,13 +82,13 @@ class UserLoginForm(AuthenticationForm):
             field.field.widget.attrs["class"] = "input_box"
             field.field.widget.attrs["required"] = "required"
 
-        self.fields['username'].widget.input_type = 'text'
+        self.fields['email'].widget.input_type = 'text'
         self.fields['password'].widget.input_type = 'password'
 
     class Meta:
-        fields = ("username", "password")
+        fields = ("email", "password")
         labels = {
-            'username': "Эл. почта",
+            'email': "Эл. почта",
             "password": "Пароль",
         }
 
@@ -96,41 +99,25 @@ class UpdateCustomUserForm(forms.ModelForm):
         fields = ("first_name", "email", "phone_number")
 
 
-class BaseUpdateProfileForm(forms.ModelForm):
-    image = forms.ImageField(
-        label="картинка",
-        widget=forms.FileInput(attrs={'class': 'form-control-file'}),
-        required=False,
-        help_text='загрузите ваше лицо для вызова доверия среди пользователей'
-    )
-    age = forms.IntegerField(
-        label="возраст",
-        min_value=14, max_value=130,
-        required=False,
-    )
-    sex = forms.ChoiceField(
-        label="пол",
-        choices=BaseProfile.Sex.choices,
-        required=False,
-    )
-
-    class Meta:
-        model = BaseProfile
-        exclude = ("rating",)
-
-
 class UpdateVolunteerProfileForm(forms.ModelForm):
     class Meta:
         model = VolunteerProfile
-        exclude = ("rating", "user", "image")
+        fields = ['age', 'sex', 'city', 'about_me']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].required = False
 
 
 class UpdateClientProfileForm(forms.ModelForm):
-    mobility = forms.ChoiceField(
-        label="мобильность",
-        choices=ClientProfile.Mobility.choices,
-    )
+    mobility = forms.ChoiceField(choices=ClientProfile.Mobility.choices, required=False)
 
     class Meta:
         model = ClientProfile
-        exclude = ("rating", "user", "image")
+        fields = ['age', 'sex', 'city', 'about_me', 'mobility']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].required = False

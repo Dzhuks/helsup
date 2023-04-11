@@ -125,7 +125,12 @@ class ClientProfile(BaseProfile):
         HO = "HO", "Люди с ограниченной степенью свободы, в том числе люди с психическими отклонениями"
 
     client = models.OneToOneField(Client, on_delete=models.CASCADE, related_name='profile')
-    mobility = models.CharField(max_length=4, choices=Mobility.choices, null=True, blank=True)
+    mobility = models.CharField(
+        max_length=4,
+        choices=Mobility.choices,
+        null=True, blank=True,
+        verbose_name='мобильность'
+    )
 
     @property
     def mobility_display(self):

@@ -1,12 +1,9 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from django.views.generic.edit import UpdateView
-from users.backends import ClientAuthBackend, VolunteerAuthBackend
 from users.forms import (ClientSignUpForm, UpdateClientProfileForm,
                          UpdateCustomUserForm, UpdateVolunteerProfileForm,
                          UserLoginForm, VolunteerSignUpForm)
@@ -62,7 +59,6 @@ def login_view(request):
 
 @login_required
 def profile(request):
-    print(request.user.__class__)
     if request.method == 'POST':
         user_form = UpdateCustomUserForm(request.POST, instance=request.user)
         if isinstance(request.user, Volunteer):

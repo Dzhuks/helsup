@@ -1,6 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-from users.models import CustomUser
+from users.models import Client, Volunteer
 
 
 class OrderManager(models.Manager):
@@ -10,10 +10,19 @@ class OrderManager(models.Manager):
 
 # Create your models here.
 class Order(models.Model):
-    user = models.ForeignKey(
-        CustomUser,
+    client = models.ForeignKey(
+        Client,
         on_delete=models.CASCADE,
-        verbose_name="пользователь"
+        null=True, blank=True,
+        related_name="my_orders",
+        verbose_name="клиент",
+    )
+    volunteer = models.ForeignKey(
+        Volunteer,
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name="liked_orders",
+        verbose_name="волонтер"
     )
     inquiry = models.CharField(
         max_length=100,
@@ -32,4 +41,4 @@ class Order(models.Model):
 
     @property
     def price_display(self):
-        return f"{self.price} тг"
+        return f"{self.price}тг"

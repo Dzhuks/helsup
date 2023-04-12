@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from orders.forms import OrderForm
 from orders.services import get_incompleted_orders
 
 
@@ -12,8 +13,20 @@ def liked_orders(request):
 
 @login_required
 def my_orders(request):
+    if request.method == "POST":
+        order_form = OrderForm(request.POST)
+        if order_form.is_valid():
+            order = order_form.save(commit=False)
+            order.client = request.user
+            order.save()
+            return redirect('orders:my_orders')
+    else:
+        order_form = OrderForm()
+
     template_name = "orders/my_orders.html"
-    context = {}
+    context = {
+        "order_form": order_form
+    }
     return render(request, template_name, context)
 
 

@@ -26,7 +26,7 @@
                     {% endif %}
                 {% else %}
                     <li><a href="{% url 'users:login' %}">ВОЙТИ</a></li>
-                    <li><a href="#">ЗАКАЗАТЬ</a></li>
+                    <li><a href="{% url 'orders:my_orders' %}">ЗАКАЗАТЬ</a></li>
                 {% endif %}
             </ul>
             </div>

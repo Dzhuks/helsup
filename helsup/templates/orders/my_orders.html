@@ -1,3 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block fonts %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+{% endblock fonts %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock css %}
+
+{% block title %}
+    <title>Invol</title>
+{% endblock title %}
+
+{% block content %}
+    <main class="main">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 40px;">
+            <h1 class="main__h1">Ваши заказы</h1>
+            <div class="popup">
+                <button class="main__button" id="createQuery">Создать Запрос</button>
+                <form class="popup__form" id="theform" method="POST">
+                    {% csrf_token %}
+                    <h2 class="popup__h2">Заказы</h2>
+                    {% for field in order_form %}
+                        {{ field }}
+                    {% endfor %}
+                    <div class="form__bts">
+                        <button class="main__button">Добавить фото</button>
+                        <button class="del_but"></button>
+                    </div>
+
+                    <button type="submit" class="form__order">Заказать</button>
+                </form>
+            </div>
+            
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <img src="./images/IMAGE (2).png" class="card__img" alt="">
+                <div class="card__content">
+                    <p class="card__text">Алексей</p>
+                    <p class="card__text">47 лет</p>
+                    <p class="card__text">Адрес: Тайпак 13</p>
+                    <p class="card__text">Группа мобильности: М3</p>
+                    <p class="card__text">Запрос: Донести 10кг сумку</p>
+                    <p class="card__text">Цена: 500тг</p>
+
+                    <button class="card__button">Изменить</button>
+
+                </div>
+            </div>
+            <div class="card">
+                <img src="./images/IMAGE (2).png" class="card__img" alt="">
+                <div class="card__content">
+                    <p class="card__text">Алексей</p>
+                    <p class="card__text">47 лет</p>
+                    <p class="card__text">Адрес: Тайпак 13</p>
+                    <p class="card__text">Группа мобильности: М3</p>
+                    <p class="card__text">Запрос: Донести 10кг сумку</p>
+                    <p class="card__text">Цена: 500тг</p>
+
+                    <button class="card__button">Изменить</button>
+                    
+                </div>
+            </div>
+            <div class="card">
+                <img src="./images/IMAGE (2).png" class="card__img" alt="">
+                <div class="card__content">
+                    <p class="card__text">Алексей</p>
+                    <p class="card__text">47 лет</p>
+                    <p class="card__text">Адрес: Тайпак 13</p>
+                    <p class="card__text">Группа мобильности: М3</p>
+                    <p class="card__text">Запрос: Донести 10кг сумку</p>
+                    <p class="card__text">Цена: 500тг</p>
+
+                    <button class="card__button">Изменить</button>
+                    
+                </div>
+            </div>
+            <div class="card">
+                <img src="./images/IMAGE (2).png" class="card__img" alt="">
+                <div class="card__content">
+                    <p class="card__text">Алексей</p>
+                    <p class="card__text">47 лет</p>
+                    <p class="card__text">Адрес: Тайпак 13</p>
+                    <p class="card__text">Группа мобильности: М3</p>
+                    <p class="card__text">Запрос: Донести 10кг сумку</p>
+                    <p class="card__text">Цена: 500тг</p>
+
+                    <button class="card__button">Изменить</button>
+                    
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock scripts %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +112,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invol</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/footer.css">
     <link rel="stylesheet" href="styles/main_header.css">

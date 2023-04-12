@@ -32,7 +32,6 @@
                     <input type="text" name="{{ field.name }}" value="{{ field.value|default_if_none:"" }}" autocomplete="off">
                 </div>
             {% endfor %}
-            {{ profile_form.as_p }}
             <button type="submit" class="profile__button">Сохранить</button>
         </form>
         <div class="elem decor">

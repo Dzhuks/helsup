@@ -45,7 +45,10 @@ def login_view(request):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect("orders:show_orders")
+                if isinstance(user, Volunteer):
+                    return redirect("orders:show_orders")
+                elif isinstance(user, Client):
+                    return redirect("orders:my_orders")
             else:
                 form.add_error(None, 'Invalid email or password.')
     else:

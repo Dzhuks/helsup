@@ -18,82 +18,8 @@
 
 {% block content %}
     <main class="main">
-        <h1 class="main__h1 main__h1_left">Ваши заказы</h1>
-
-        <div class="cards">
-            {% for order in orders %}
-                <div class="card">
-                    <img src="{% static 'img/Image (2).png' %}" class="card__img" alt="">
-                    <div class="card__content">
-                        <p class="card__text">{{ order.user.first_name }}</p>
-                        <p class="card__text">{{ order.user.profile.age }}</p>
-                        <p class="card__text">{{ order.user.profile.region }}</p>
-                        <p class="card__text">{{ order.user.profile.mobility_display }}</p>
-                        <p class="card__text">{{ order.inquiry }}</p>
-                        <p class="card__text">{{ order.price_display }}</p>
-
-                        <button class="card__button">Принять заказ</button>
-                    </div>
-                </div>
-            {% endfor %}
-
-            <div class="card">
-                <img src="{% static 'img/Image (2).png' %}" class="card__img" alt="">
-                <div class="card__content">
-                    <p class="card__text">Алексей</p>
-                    <p class="card__text">47 лет</p>
-                    <p class="card__text">Адрес: Тайпак 13</p>
-                    <p class="card__text">Группа мобильности: М3</p>
-                    <p class="card__text">Запрос: Донести 10кг сумку</p>
-                    <p class="card__text">Цена: 500тг</p>
-
-                    <button class="card__button">Принять заказ</button>
-
-                </div>
-            </div>
-            <div class="card">
-                <img src="./images/IMAGE (2).png" class="card__img" alt="">
-                <div class="card__content">
-                    <p class="card__text">Алексей</p>
-                    <p class="card__text">47 лет</p>
-                    <p class="card__text">Адрес: Тайпак 13</p>
-                    <p class="card__text">Группа мобильности: М3</p>
-                    <p class="card__text">Запрос: Донести 10кг сумку</p>
-                    <p class="card__text">Цена: 500тг</p>
-
-                    <button class="card__button">Принять заказ</button>
-                    
-                </div>
-            </div>
-            <div class="card">
-                <img src="./images/IMAGE (2).png" class="card__img" alt="">
-                <div class="card__content">
-                    <p class="card__text">Алексей</p>
-                    <p class="card__text">47 лет</p>
-                    <p class="card__text">Адрес: Тайпак 13</p>
-                    <p class="card__text">Группа мобильности: М3</p>
-                    <p class="card__text">Запрос: Донести 10кг сумку</p>
-                    <p class="card__text">Цена: 500тг</p>
-
-                    <button class="card__button">Принять заказ</button>
-                    
-                </div>
-            </div>
-            <div class="card">
-                <img src="./images/IMAGE (2).png" class="card__img" alt="">
-                <div class="card__content">
-                    <p class="card__text">Алексей</p>
-                    <p class="card__text">47 лет</p>
-                    <p class="card__text">Адрес: Тайпак 13</p>
-                    <p class="card__text">Группа мобильности: М3</p>
-                    <p class="card__text">Запрос: Донести 10кг сумку</p>
-                    <p class="card__text">Цена: 500тг</p>
-
-                    <button class="card__button">Принять заказ</button>
-                    
-                </div>
-            </div>
-        </div>
+        <h1 class="main__h1 main__h1_left">Заказы</h1>
+        {% include "orders/_orders.html" with orders=orders %}
     </main>
 {% endblock content %}
 

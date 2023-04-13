@@ -5,7 +5,13 @@ from users.models import Client, Volunteer
 
 class OrderManager(models.Manager):
     def get_incompleted_orders(self):
-        return super().get_queryset().filter(completed=False)
+        return super().get_queryset().filter(is_completed=False)
+
+    def get_volunteer_orders(self, volunteer: Volunteer):
+        return super().get_queryset().filter(volunteer=Volunteer).order_by("is_completed")
+
+    def get_client_orders(self, client: Client):
+        return super().get_queryset().filter(client=client).order_by("is_completed")
 
 
 # Create your models here.
@@ -32,7 +38,7 @@ class Order(models.Model):
         validators=[MinValueValidator(100)],
         verbose_name="цена"
     )
-    completed = models.BooleanField(
+    is_completed = models.BooleanField(
         default=False,
         verbose_name="выполнено"
     )
@@ -40,5 +46,9 @@ class Order(models.Model):
     objects = OrderManager()
 
     @property
+    def inquiry_display(self):
+        return f"Запрос: {self.inquiry}"
+
+    @property
     def price_display(self):
-        return f"{self.price}тг"
+        return f"Цена: {self.price} тг"

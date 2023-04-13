@@ -2,7 +2,7 @@
 {% load users_extras %}
 
 <header class="header">
-    <h1 class="header__logo">InVol</h1>
+    <h1 class="header__logo"><a href="{% url 'homepage:home' %}">InVol</a></h1>
     <div class="header__nav">
         <div class="header__links">
             <a href="{% url 'orders:show_orders' %}" class="header__link header__link_selected">Заказы</a>

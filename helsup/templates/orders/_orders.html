@@ -1,0 +1,20 @@
+{% load static %}
+
+
+<div class="cards">
+    {% for order in orders %}
+        <div class="card">
+            <img src="{% static 'img/Image (2).png' %}" class="card__img" alt="">
+            <div class="card__content">
+                <p class="card__text">{{ order.client.first_name }}</p>
+                <p class="card__text">{{ order.client.profile.age }}</p>
+                <p class="card__text">{{ order.client.profile.city_display }}</p>
+                <p class="card__text">{{ order.client.profile.mobility_display }}</p>
+                <p class="card__text">{{ order.inquiry }}</p>
+                <p class="card__text">{{ order.price_display }}</p>
+
+                <button class="card__button">Принять заказ</button>
+            </div>
+        </div>
+    {% endfor %}
+</div>

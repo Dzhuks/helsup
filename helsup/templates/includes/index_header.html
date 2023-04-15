@@ -19,9 +19,9 @@
                 <!-- ПРИ БЭКЕНДЕ ЕСЛИ УЖЕ ВОШЕЛ В АККАУНТ, ТО ВМЕСТО "ЗАКАЗАТЬ" БУДЕТ "ПРОФИЛЬ" -->
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'users:logout' %}">ВЫЙТИ</a></li>
-                    {% if user|is_instance:"Volunteer" %}
+                    {% if user|isinstance:"Volunteer" %}
                         <li><a href="{% url 'users:vol_profile' %}">ПРОФИЛЬ</a></li>
-                    {% elif user|is_instance:"Client" %}
+                    {% elif user|isinstance:"Client" %}
                         <li><a href="{% url 'users:cli_profile' %}">ПРОФИЛЬ</a></li>
                     {% endif %}
                 {% else %}

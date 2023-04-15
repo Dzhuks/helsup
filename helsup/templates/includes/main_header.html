@@ -11,9 +11,9 @@
             <a href="#" class="header__link">Фильтр</a>
         </div>
         <a href="#"><img src="{% static 'img/liked.png' %}" class="header__liked" alt=""></a>
-        {% if user|is_instance:"Volunteer" %}
+        {% if user|isinstance:"Volunteer" %}
             <a href="{% url 'users:vol_profile' %}"><img src="{% static 'img/user.svg' %}" class="header__user" alt=""></a>
-        {% elif user|is_instance:"Client" %}
+        {% elif user|isinstance:"Client" %}
            <a href="{% url 'users:cli_profile' %}"><img src="{% static 'img/user.svg' %}" class="header__user" alt=""></a>
         {% endif %}
     </div>

@@ -1,4 +1,5 @@
 {% load static %}
+{% load users_extras %}
 
 
 <div class="cards">
@@ -13,7 +14,11 @@
                 <p class="card__text">{{ order.inquiry }}</p>
                 <p class="card__text">{{ order.price_display }}</p>
 
-                <button class="card__button">Принять заказ</button>
+                {% if user|isinstance:"Volunteer" %}
+                    <button class="card__button">Принять заказ</button>
+                {% elif user|isinstance:"Client" %}
+                    <button class="card__button">Изменить</button>
+                {% endif %}
             </div>
         </div>
     {% endfor %}

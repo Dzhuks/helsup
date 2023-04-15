@@ -108,6 +108,10 @@ class BaseProfile(models.Model):
     class Meta:
         abstract = True
 
+    @property
+    def city_display(self):
+        return f"Адрес: {self.city}"
+
 
 class VolunteerProfile(BaseProfile):
     volunteer = models.OneToOneField(Volunteer, on_delete=models.CASCADE, related_name='profile')
@@ -136,7 +140,7 @@ class ClientProfile(BaseProfile):
     def mobility_display(self):
         if self.mobility == 'Нету':
             return 'Нету мобильности'
-        return f'Группа мобильности {self.mobility}'
+        return f'Группа мобильности: {self.mobility}'
 
 
 @receiver(post_save, sender=Volunteer)

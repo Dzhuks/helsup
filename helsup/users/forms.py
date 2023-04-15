@@ -71,8 +71,8 @@ class ClientSignUpForm(UserCreationForm):
 
 
 class UserLoginForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(label="Эл. почта")
+    password = forms.CharField(widget=forms.PasswordInput, label="Пароль")
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
@@ -87,10 +87,6 @@ class UserLoginForm(forms.Form):
 
     class Meta:
         fields = ("email", "password")
-        labels = {
-            'email': "Эл. почта",
-            "password": "Пароль",
-        }
 
 
 class UpdateCustomUserForm(forms.ModelForm):
@@ -111,7 +107,7 @@ class UpdateVolunteerProfileForm(forms.ModelForm):
 
 
 class UpdateClientProfileForm(forms.ModelForm):
-    mobility = forms.ChoiceField(choices=ClientProfile.Mobility.choices, required=False)
+    mobility = forms.ChoiceField(choices=ClientProfile.Mobility.choices, required=False, label="Мобильность")
 
     class Meta:
         model = ClientProfile

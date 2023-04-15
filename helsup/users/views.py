@@ -3,11 +3,14 @@ from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic import CreateView
+from users.decorators import client_required, volunteer_required
 from users.forms import (ClientSignUpForm, UpdateClientProfileForm,
                          UpdateCustomUserForm, UpdateVolunteerProfileForm,
                          UserLoginForm, VolunteerSignUpForm)
-from users.models import Client, Volunteer, VolunteerProfile
+from users.models import Client, Volunteer
 
 
 # Sign Up Views
@@ -60,37 +63,50 @@ def login_view(request):
     return render(request, template_name, context)
 
 
-@login_required
-def profile(request):
-    if request.method == 'POST':
-        user_form = UpdateCustomUserForm(request.POST, instance=request.user)
-        if isinstance(request.user, Volunteer):
-            profile_form = UpdateVolunteerProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        elif isinstance(request.user, Client):
-            profile_form = UpdateClientProfileForm(request.POST, request.FILES, instance=request.user.profile)
+@method_decorator(login_required, name="dispatch")
+class ProfileView(View):
+    user_form_class = UpdateCustomUserForm
+    profile_form_class = None
+    template_name = "users/profile.html"
+    redirect_url = None
 
+    def get_user_profile(self, request):
+        user = request.user
+        profile = user.profile
+        return user, profile
+
+    def get(self, request):
+        user, profile = self.get_user_profile(request)
+        user_form = self.user_form_class(instance=user)
+        profile_form = self.profile_form_class(instance=profile)
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        user, profile = self.get_user_profile(request)
+        user_form = self.user_form_class(request.POST, instance=user)
+        profile_form = self.profile_form_class(request.POST, request.FILES, instance=profile)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            # messages.success(request, 'Your profile is updated successfully')
-            return redirect('orders:show_orders')
-        else:
-            user_form = UpdateCustomUserForm(instance=request.user)
-            if isinstance(request.user, Volunteer):
-                profile_form = UpdateVolunteerProfileForm(request.POST, request.FILES, instance=request.user.profile)
-            elif isinstance(request.user, Client):
-                profile_form = UpdateClientProfileForm(request.POST, request.FILES, instance=request.user.profile)
-    else:
-        user_form = UpdateCustomUserForm(instance=request.user)
-        if isinstance(request.user, Volunteer):
-            vol_profile = VolunteerProfile.objects.get(volunteer=request.user)
-            profile_form = UpdateVolunteerProfileForm(request.POST, request.FILES, instance=vol_profile)
-        elif isinstance(request.user, Client):
-            profile_form = UpdateClientProfileForm(request.POST, request.FILES, instance=request.user.profile)
+            return redirect(self.redirect_url)
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form
+        }
+        return render(request, self.template_name, context)
 
-    template_name = "users/profile.html"
-    context = {
-        'user_form': user_form,
-        'profile_form': profile_form
-    }
-    return render(request, template_name, context)
+
+@method_decorator(volunteer_required, name="dispatch")
+class VolunteerProfileView(ProfileView):
+    profile_form_class = UpdateVolunteerProfileForm
+    redirect_url = 'orders:show_orders'
+
+
+@method_decorator(client_required, name="dispatch")
+class ClientProfileView(ProfileView):
+    profile_form_class = UpdateClientProfileForm
+    redirect_url = 'orders:my_orders'

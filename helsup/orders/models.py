@@ -11,7 +11,7 @@ class OrderManager(models.Manager):
         return self.get_incompleted_orders().filter(volunteer=None)
 
     def get_volunteer_orders(self, volunteer: Volunteer):
-        return super().get_queryset().filter(volunteer=Volunteer).order_by("is_completed")
+        return super().get_queryset().filter(volunteer=volunteer).order_by("is_completed")
 
     def get_client_orders(self, client: Client):
         return super().get_queryset().filter(client=client).order_by("is_completed")

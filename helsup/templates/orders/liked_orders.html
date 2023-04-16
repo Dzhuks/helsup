@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block fonts %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+{% endblock fonts %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock css %}
+
+{% block title %}
+    <title>Invol</title>
+{% endblock title %}
+
+{% block content %}
+    <main class="main">
+        <h1 class="main__h1 main__h1_left">Принятые заказы</h1>
+        {% include "orders/_orders.html" with orders=volunteer_orders %}
+    </main>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock scripts %}

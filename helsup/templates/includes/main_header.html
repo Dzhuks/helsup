@@ -10,8 +10,12 @@
             <a href="#" class="header__link">Поддержка</a>
             <a href="#" class="header__link">Фильтр</a>
         </div>
-        <a href="#"><img src="{% static 'img/liked.png' %}" class="header__liked" alt=""></a>
         {% if user|isinstance:"Volunteer" %}
+            {% if request.path == '/orders/show_orders' %}
+                <a href="{% url 'orders:liked_orders' %}"><img src="{% static 'img/liked.png' %}" class="header__liked" alt=""></a>
+            {% elif request.path == '/orders/my_orders' %}
+                <a href="{% url 'orders:liked_orders' %}"><img src="{% static 'img/like_activated.png' %}" class="header__liked" alt=""></a>
+            {% endif %}
             <a href="{% url 'users:vol_profile' %}"><img src="{% static 'img/user.svg' %}" class="header__user" alt=""></a>
         {% elif user|isinstance:"Client" %}
            <a href="{% url 'users:cli_profile' %}"><img src="{% static 'img/user.svg' %}" class="header__user" alt=""></a>

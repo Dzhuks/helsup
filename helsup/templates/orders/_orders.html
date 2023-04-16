@@ -17,9 +17,11 @@
                 <form method="post">
                     {% csrf_token %}
                     <input type="hidden" name="order_id" value="{{ order.id }}">
-                    {% if user|isinstance:"Volunteer" %}
+                    {% if request.path == '/orders/liked_orders' %}
+                        <button type="submit" class="card__button" name="take_order">Отменить заказ</button>
+                    {% elif request.path == '/orders/show_orders' %}
                         <button type="submit" class="card__button" name="take_order">Принять заказ</button>
-                    {% elif user|isinstance:"Client" %}
+                    {% elif request.path == '/orders/my_orders' %}
                         <button type="submit" class="card__button" name="change_order">Изменить</button>
                     {% endif %}
                 </form>

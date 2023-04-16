@@ -7,6 +7,9 @@ class OrderManager(models.Manager):
     def get_incompleted_orders(self):
         return super().get_queryset().filter(is_completed=False)
 
+    def get_free_orders(self):
+        return self.get_incompleted_orders().filter(volunteer=None)
+
     def get_volunteer_orders(self, volunteer: Volunteer):
         return super().get_queryset().filter(volunteer=Volunteer).order_by("is_completed")
 

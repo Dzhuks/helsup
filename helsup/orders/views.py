@@ -36,8 +36,18 @@ def my_orders(request):
 
 @login_required
 def show_orders(request):
+    if request.method == 'POST':
+        if "take_order" in request.POST:
+            order_id = request.POST.get('order_id')
+            order = Order.objects.get(id=order_id)
+            order.volunteer = request.user
+            order.save()
+            return redirect('orders:show_orders')
+        elif request.POST.get("change_order"):  # You can use else in here too if there is only 2 submit types.
+            pass
+
     template_name = "orders/show_orders.html"
     context = {
-        "orders": Order.objects.get_incompleted_orders(),
+        "orders": Order.objects.get_free_orders(),
     }
     return render(request, template_name, context)

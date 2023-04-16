@@ -14,11 +14,15 @@
                 <p class="card__text">{{ order.inquiry }}</p>
                 <p class="card__text">{{ order.price_display }}</p>
 
-                {% if user|isinstance:"Volunteer" %}
-                    <button class="card__button">Принять заказ</button>
-                {% elif user|isinstance:"Client" %}
-                    <button class="card__button">Изменить</button>
-                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="order_id" value="{{ order.id }}">
+                    {% if user|isinstance:"Volunteer" %}
+                        <button type="submit" class="card__button" name="take_order">Принять заказ</button>
+                    {% elif user|isinstance:"Client" %}
+                        <button type="submit" class="card__button" name="change_order">Изменить</button>
+                    {% endif %}
+                </form>
             </div>
         </div>
     {% endfor %}
